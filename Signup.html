@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ChatCode-Signup</title>
+    <link rel ="stylesheet" href = "styles.css">
+  </head>
+
+  <body>
+    <button id = "CloseBtn1" class="button2"><span>X</span></button>
+    <br>
+    <center><h1>ChatCode Signup</h1></center>
+    <center>
+      <br>
+      <br>
+      <form method="POST">
+        <div style="text-align: center;">
+          <input type = "text"
+                 id = "newUsr"
+                 name ="Username-s"
+                 placeholder="Username (At least 6 characters)"></input>
+          </div>
+          <br>
+          <div style="text-align: center;">
+          <input type = "password"
+                  id = "newPwd"
+                  name="Password"
+                  placeholder="Password (At least 6 characters)"></input>
+          </div>
+          <br>
+          <div style="text-align: center;">
+          <input type = "password"
+                  id = "newPwd1"
+                  name="Password1"
+                  placeholder="Confirm Password"></input>
+          </div>
+      <br>
+      <br>
+      </form>
+      <button type = "submit" value= "submit" name= "Sign-up" id = "SignupBtn" class="button" style="vertical-align:middle"><span>Sign Up</span></button>
+      <a href="index.html">Login</a>
+      <br>
+      <br>
+      <br>
+  Built on Electron <script>document.write(process.versions.electron)</script>.
+    </center>
+    <script>
+      require('./ChatCodeSignup.js');
+    </script>
+  </body>
+  <!-- SQL Servre Connection -->
+  <script src="SQL.js"></script>
+  <script>
+    window.onload=function(e){
+        connectToDatabase("dvResult")
+    }
+  </script>
+</html>

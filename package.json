@@ -1,0 +1,15 @@
+{
+  "name": "ChatCode",
+  "version": "0.0.1",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "description": "Simple Chat App - Used for chatting, networking, communication.",
+  "author": "Dustin Morin, Tyler Brubaker",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "electron-prebuilt": "^1.4.13",
+    "mysql": "^2.16.0"
+  }
+}
