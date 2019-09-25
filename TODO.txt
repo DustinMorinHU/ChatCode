@@ -1,0 +1,6 @@
+-Impliment encryption
+-Impliment chat funtion
+-Impliment audio funtion
+-Impliment video function
+-Use ReactJS to create a user interface
+-Test/Debgug
