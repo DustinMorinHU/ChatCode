@@ -2,6 +2,10 @@
   "name": "ChatCode",
   "version": "0.0.1",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DustinTylerMorin/ChatCode"
+  },
   "scripts": {
     "start": "electron ."
   },
@@ -10,6 +14,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "electron-prebuilt": "^1.4.13",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "react": "^16.10.1"
   }
 }
