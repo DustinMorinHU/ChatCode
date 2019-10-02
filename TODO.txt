@@ -4,3 +4,5 @@
 -Implement video function
 -Use ReactJS to create a user interface
 -Test/Debgug
+
+10/2/19 - Start Implementation  
