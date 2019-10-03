@@ -12,32 +12,32 @@ Button.addEventListener('click', function(event) {
     // Database Configuration
     var con = sql.createConnection({
         host:"Morin.tk",
-        user: 'root',
-        password: '',
+        user: 'ChatCode',
+        password: 'ChatCode123',
         server: 'Morin.tk',
-        database: 'Login',
+        database: 'ChatCode',
     });
     const myUsr = document.getElementById("myUsr").value;
     const myPwd = document.getElementById("myPwd").value;
     console.log('Provided Username: ' + myUsr);
-    name = con.query('SELECT * FROM Users',(err, rows, fields)=>{
+    name = con.query('SELECT * FROM Login',(err, rows, fields)=>{
       if(!err){
         var text = [];
         var i;
           for (i = 0; i < rows.length; i++) {
-            text.push(rows[i].username);
+            text.push(rows[i].Username);
             }
         console.log(text)
         var nameInput = myUsr
         var x;
         if ((text.indexOf(myUsr) != '-1')){
           console.log(text.indexOf(myUsr));
-          var username = rows[text.indexOf(myUsr)].username
+          var username = rows[text.indexOf(myUsr)].Username
           console.log(username);
           var pass = [];
           var i;
             for (i = 0; i < rows.length; i++) {
-              pass.push(rows[i].password);
+              pass.push(rows[i].Password);
               }
             console.log(pass)
             if (text.indexOf(myUsr) == pass.indexOf(myPwd)){

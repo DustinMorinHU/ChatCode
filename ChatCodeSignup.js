@@ -12,16 +12,16 @@ Button.addEventListener('click', function(event) {
     // Database Configuration
     var con = sql.createConnection({
         host:"Morin.tk",
-        user: 'root',
-        password: '',
+        user: 'ChatCode',
+        password: 'ChatCode123',
         server: 'Morin.tk',
-        database: 'Login',
+        database: 'ChatCode',
     });
     const newUsr = document.getElementById("newUsr").value;
     const newPwd = document.getElementById("newPwd").value;
     const newPwd1 = document.getElementById("newPwd1").value;
     console.log('Provided Username: ' + newUsr);
-    name = con.query('SELECT * FROM Users',(err, rows, fields)=>{
+    name = con.query('SELECT * FROM Login',(err, rows, fields)=>{
       if(!err){
         var text = [];
         var i;
@@ -34,7 +34,7 @@ Button.addEventListener('click', function(event) {
         if (text.indexOf(newUsr) == '-1' && len >= 6){
             if (newPwd == newPwd1 && newPwd != null){
               info = [[newUsr, newPwd]];
-              con.query('INSERT INTO Users(username, password) VALUES ?',[info],(err, results, fields) => {
+              con.query('INSERT INTO Login(username, password) VALUES ?',[info],(err, results, fields) => {
                   if (err) {
                     return console.error(err.message);
                   }
