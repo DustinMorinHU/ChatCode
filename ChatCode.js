@@ -39,7 +39,6 @@ Button.addEventListener('click', function(event) {
             for (i = 0; i < rows.length; i++) {
               pass.push(rows[i].Password);
               }
-            console.log(pass)
             if (text.indexOf(myUsr) == pass.indexOf(myPwd)){
               console.log('SUCCESS!')
               let chatWin = new BrowserWindow({ width: 1280, height: 720 });
@@ -50,7 +49,10 @@ Button.addEventListener('click', function(event) {
                 }));
                 window.close()
             }
-        }
+            else{
+              console.log("Incorrect Password!")
+            }
+          }
         else {
           console.log('No match!')
         }

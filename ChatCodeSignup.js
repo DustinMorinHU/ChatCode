@@ -46,7 +46,7 @@ Button.addEventListener('click', function(event) {
             }
         }
         else {
-          console.log('Username Taken!')
+          console.log('Username Taken or Too Short!')
         }
       }
       else {
