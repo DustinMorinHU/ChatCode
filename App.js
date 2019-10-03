@@ -1,1 +1,2 @@
-import React from 'React'
+const react = require ('react')
+console.log("REACT!")
