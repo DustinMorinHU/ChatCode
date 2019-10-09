@@ -6,7 +6,21 @@ const remote = require('electron');
 const electron = require('electron');
 const app = electron.app
 const Button = document.getElementById('button1');
+var text1 = document.getElementById('Logintxt');
+// Show an element
+var show = function (elem) {
+	elem.classList.add('is-visible');
+};
+// Hide an element
+var hide = function (elem) {
+	elem.classList.remove('is-visible');
+};
+// Toggle element visibility
+var toggle = function (elem) {
+	elem.classList.toggle('is-visible');
+};
 Button.addEventListener('click', function(event) {
+  hide(text1);
     console.log('Login Button Clicked!');
     var sql = require("mysql");
     // Database Configuration
@@ -51,10 +65,14 @@ Button.addEventListener('click', function(event) {
             }
             else{
               console.log("Incorrect Password!")
+              show(text1)
+              document.getElementById('Logintxt').innerHTML = "Incorrect password!";
             }
           }
         else {
           console.log('No match!')
+          show(text1)
+          document.getElementById('Logintxt').innerHTML = "Username does not exist!";
         }
       }
       else {
