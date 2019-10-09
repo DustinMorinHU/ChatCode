@@ -46,7 +46,7 @@ Button.addEventListener('click', function(event) {
         len = newUsr.length
         console.log(len)
         if (text.indexOf(newUsr) == '-1' && len >= 6){
-            if (newPwd == newPwd1 && newPwd != null){
+            if (newPwd == newPwd1 && newPwd.length >= 6){
               info = [[newUsr, newPwd]];
               con.query('INSERT INTO Login(username, password) VALUES ?',[info],(err, results, fields) => {
                   if (err) {
@@ -57,14 +57,19 @@ Button.addEventListener('click', function(event) {
               show(text1);
               document.getElementById('Signuptxt').innerHTML = "Signup successful!";
             }
-            else{
-              console.log("Provided passwords didn't match!");
+            else if(newPwd == newPwd1 && newPwd.length < 6){
+              console.log("Password too short!");
               show(text1);
-              document.getElementById('Signuptxt').innerHTML = "Provided passwords didn't match!";
+              document.getElementById('Signuptxt').innerHTML = "Password too short!";
+            }
+            else{
+              console.log("Password did not match!");
+              show(text1);
+              document.getElementById('Signuptxt').innerHTML = "Provided passwords didn't match!";  
             }
         }
         else {
-          console.log('Username Taken or Too Short!');
+          console.log('Username taken or password too Short!');
           show(text1);
           document.getElementById('Signuptxt').innerHTML = "Username taken or too short!";
         }
