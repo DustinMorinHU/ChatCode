@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Video Call</title>
+    <link rel ="stylesheet" href = "styles.css">
+  </head>
 
-<h1>My First Heading</h1>
-
-<p>My first paragraph.</p>
-
-</body>
+  <body>
+    <button id = "CloseBtn" class="button2"><span>X</span></button>
+    <br>
+    <center><h1>Welcome To ChatCode</h1></center>
+    <center>
+      <br>
+      <br>
+      <form method="POST">
+        <div style="text-align: center;">
+          <input type = "text"
+                 id = "myUsr"
+                 name ="Username"
+                 placeholder="Username"></input>
+          </div>
+          <br>
+          <div style="text-align: center;">
+          <input type = "password"
+                  id = "myPwd"
+                  name="Password"
+                  placeholder="Password"></input>
+          </div>
+      <br>
+      <br>
+      </form>
+      <button type = "submit" id = "button1" class="button" style="vertical-align:middle"><span>Login</span></button>
+      <a href="Signup.html">Sign Up</a>
+      <br>
+      <br>
+      <br>
+  Built on Electron <script>document.write(process.versions.electron)</script>.
+    </center>
+    <script>
+      require('./App.js');
+    </script>
+  </body>
 </html>
