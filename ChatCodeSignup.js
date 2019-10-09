@@ -6,7 +6,21 @@ const remote = require('electron');
 const electron = require('electron');
 const app = electron.app
 const Button = document.getElementById('SignupBtn');
+var text1 = document.getElementById('Signuptxt');
+// Show an element
+var show = function (elem) {
+	elem.classList.add('is-visible');
+};
+// Hide an element
+var hide = function (elem) {
+	elem.classList.remove('is-visible');
+};
+// Toggle element visibility
+var toggle = function (elem) {
+	elem.classList.toggle('is-visible');
+};
 Button.addEventListener('click', function(event) {
+    hide(text1)
     console.log('Login Button Clicked!');
     var sql = require("mysql");
     // Database Configuration
@@ -26,7 +40,7 @@ Button.addEventListener('click', function(event) {
         var text = [];
         var i;
           for (i = 0; i < rows.length; i++) {
-            text.push(rows[i].username);
+            text.push(rows[i].Username);
             }
         console.log(text)
         len = newUsr.length
@@ -39,19 +53,27 @@ Button.addEventListener('click', function(event) {
                     return console.error(err.message);
                   }
                 });
-              console.log('SUCCESS!')
+              console.log('SUCCESS!');
+              show(text1);
+              document.getElementById('Signuptxt').innerHTML = "Signup successful!";
             }
             else{
-              console.log('Passwords didnt match')
+              console.log("Provided passwords didn't match!");
+              show(text1);
+              document.getElementById('Signuptxt').innerHTML = "Provided passwords didn't match!";
             }
         }
         else {
-          console.log('Username Taken or Too Short!')
+          console.log('Username Taken or Too Short!');
+          show(text1);
+          document.getElementById('Signuptxt').innerHTML = "Username taken or too short!";
         }
       }
       else {
-        console.log(err);
         console.log('database failure');
+        console.log(err);
+        show(text1);
+        document.getElementById('Signuptxt').innerHTML = "Something went wrong! Try again later.";
       }
     });
   });

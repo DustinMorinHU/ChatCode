@@ -74,3 +74,10 @@ body {
   cursor: pointer;
   -webkit-app-region: no-drag;
 }
+.toggle-content {
+	display: none;
+}
+
+.toggle-content.is-visible {
+	display: block;
+}
