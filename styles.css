@@ -4,9 +4,24 @@ body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     overflow:hidden;
     margin: 0;
+    -webkit-app-region: drag;
+}
+.text {
+    color: #0080ff;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow:hidden;
+    margin: 0;
     -webkit-app-region: no-drag;
 }
+.error {
+    -webkit-app-region: no-drag;
+    color: #ff0000;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    overflow:hidden;
+    margin: 0;
+}
 .button {
+  -webkit-app-region: no-drag;
   display: block;
   border-radius: 8px;
   background-color: #0080ff;
