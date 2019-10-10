@@ -39,10 +39,10 @@ Button.addEventListener('click', function(event) {
         var text = [];
         var i;
           for (i = 0; i < rows.length; i++) {
-            text.push(rows[i].Username);
+            text.push(rows[i].Username.toLowerCase());
             }
         console.log(text)
-        var nameInput = myUsr
+        var nameInput = myUsr.toLowerCase()
         var x;
         if ((text.indexOf(myUsr) != '-1')){
           console.log(text.indexOf(myUsr));

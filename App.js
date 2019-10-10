@@ -16,7 +16,6 @@ Button.addEventListener('click', function(event) {
       protocol: 'file:',
       slashes: true
     }));
-    window.close()
   });
 
 
