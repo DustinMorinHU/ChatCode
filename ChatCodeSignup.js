@@ -31,7 +31,7 @@ Button.addEventListener('click', function(event) {
         server: 'Morin.tk',
         database: 'ChatCode',
     });
-    const newUsr = document.getElementById("newUsr").value;
+    const newUsr = document.getElementById("newUsr").value.toLowerCase();
     const newPwd = document.getElementById("newPwd").value;
     const newPwd1 = document.getElementById("newPwd1").value;
     console.log('Provided Username: ' + newUsr);
@@ -40,7 +40,7 @@ Button.addEventListener('click', function(event) {
         var text = [];
         var i;
           for (i = 0; i < rows.length; i++) {
-            text.push(rows[i].Username);
+            text.push(rows[i].Username.toLowerCase());
             }
         console.log(text)
         len = newUsr.length
@@ -65,7 +65,7 @@ Button.addEventListener('click', function(event) {
             else{
               console.log("Password did not match!");
               show(text1);
-              document.getElementById('Signuptxt').innerHTML = "Provided passwords didn't match!";  
+              document.getElementById('Signuptxt').innerHTML = "Provided passwords didn't match!";
             }
         }
         else {
