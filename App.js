@@ -18,10 +18,10 @@ Button.addEventListener('click', function(event) {
     }));
   });
 
-  var Button = document.getElementById('AudioCall');
-  Button.addEventListener('click', function(event) {
+  var Button1 = document.getElementById('AudioCall');
+  Button1.addEventListener('click', function(event) {
     let audio = new BrowserWindow({ width: 720, height: 420 });
-    vid.loadURL(url.format({
+    audio.loadURL(url.format({
         pathname: path.join(__dirname, 'AudioCall.html'),
         protocol: 'file:',
         slashes: true
