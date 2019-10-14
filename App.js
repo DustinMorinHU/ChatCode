@@ -8,15 +8,25 @@ const app = electron.app
 
 console.log("REACT!")
 
-const Button = document.getElementById('VidCall');
+var Button = document.getElementById('VidCall');
 Button.addEventListener('click', function(event) {
-  let vid = new BrowserWindow({ width: 1280, height: 720 });
+  let vid = new BrowserWindow({ width: 720, height: 420, alwaysOnTop: true });
   vid.loadURL(url.format({
       pathname: path.join(__dirname, 'VidCall.html'),
       protocol: 'file:',
       slashes: true
     }));
   });
+
+  var Button = document.getElementById('AudioCall');
+  Button.addEventListener('click', function(event) {
+    let audio = new BrowserWindow({ width: 720, height: 420 });
+    vid.loadURL(url.format({
+        pathname: path.join(__dirname, 'AudioCall.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+    });
 
 
 
