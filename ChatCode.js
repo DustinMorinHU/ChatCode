@@ -31,7 +31,7 @@ Button.addEventListener('click', function(event) {
         server: 'Morin.tk',
         database: 'ChatCode',
     });
-    const myUsr = document.getElementById("myUsr").value;
+    const myUsr = document.getElementById("myUsr").value.toLowerCase();
     const myPwd = document.getElementById("myPwd").value;
     console.log('Provided Username: ' + myUsr);
     name = con.query('SELECT * FROM Login',(err, rows, fields)=>{
@@ -46,7 +46,7 @@ Button.addEventListener('click', function(event) {
         var x;
         if ((text.indexOf(myUsr) != '-1')){
           console.log(text.indexOf(myUsr));
-          var username = rows[text.indexOf(myUsr)].Username
+          var username = rows[text.indexOf(myUsr)].Username.toLowerCase();
           console.log(username);
           var pass = [];
           var i;
