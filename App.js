@@ -8,9 +8,9 @@ const app = electron.app
 
 console.log("REACT!")
 
-var Button = document.getElementById('VidCall');
-Button.addEventListener('click', function(event) {
-  let vid = new BrowserWindow({ width: 720, height: 420, alwaysOnTop: true });
+var Button3 = document.getElementById('VidCall');
+Button3.addEventListener('click', function(event) {
+  let vid = new BrowserWindow({ width: 1280, height: 720 });
   vid.loadURL(url.format({
       pathname: path.join(__dirname, 'VidCall.html'),
       protocol: 'file:',

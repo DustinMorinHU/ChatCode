@@ -7,8 +7,21 @@
   </head>
 
   <body>
-
-    <script>
+    <audio autoplay></audio>
+    <script type="text/javascript">
+      function errorCallback(e) {
+        console.log('Error', e)
+      }
+      var constraints = {audio: true, video: false };
+      navigator.mediaDevices.getUserMedia(constraints)
+      .then(function(mediaStream) {
+        var audio = document.querySelector('audio');
+        audio.srcObject = mediaStream;
+        audio.onloadedmetadata = function(e) {
+          audio.play();
+          //Ready to go. Do stuff.
+        };
+      }, errorCallback);
       require('./App.js');
     </script>
   </body>

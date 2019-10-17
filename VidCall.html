@@ -7,8 +7,27 @@
   </head>
 
   <body>
-
-    <script>
+    <video autoplay></video>
+    <script type="text/javascript">
+      function errorCallback(e) {
+        console.log('Error', e)
+      }
+      var constraints = {
+        audio: true,
+        video: {
+          width: { min: 640, ideal: 1280, max: 1920 },
+          height: { min: 480, ideal: 720, max: 1080 }
+        }
+      };
+      navigator.mediaDevices.getUserMedia(constraints)
+      .then(function(mediaStream) {
+        var video = document.querySelector('video');
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = function(e) {
+          video.play();
+          //Ready to go. Do stuff.
+        };
+      }, errorCallback);
       require('./App.js');
     </script>
   </body>
