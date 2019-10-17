@@ -53,7 +53,7 @@ Button.addEventListener('click', function(event) {
             for (i = 0; i < rows.length; i++) {
               pass.push(rows[i].Password);
               }
-            if (text.indexOf(myUsr) == pass.indexOf(myPwd)){
+            if (text.indexOf(myUsr) == pass.indexOf(myPwd, text.indexOf(myUsr))){
               console.log('SUCCESS!')
               let chatWin = new BrowserWindow({ width: 1280, height: 720 });
               chatWin.loadURL(url.format({
