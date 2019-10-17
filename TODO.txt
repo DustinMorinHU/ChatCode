@@ -5,4 +5,5 @@
 -Use ReactJS to create a user interface
 -Test/Debgug
 
-10/2/19 - Start Implementation  
+10/2/19 - Start Implementation
+10/17/19 - Start implementing ReactJS for UI.
