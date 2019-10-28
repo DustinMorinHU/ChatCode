@@ -16,7 +16,6 @@ const constraints = window.constraints = {
   }
 };
 
-
 console.log("REACT!");
 const Button3 = document.getElementById("VidCall");
 //const mediaStream = navigator.mediaDevices.getUserMedia(constraints);
@@ -57,18 +56,22 @@ function errorMsg(msg, error) {
   }
 };
 
+const constraints1 = window.constraints = {
+  audio: true,
+  video: false };
 
-
-  /*var Button1 = document.getElementById('AudioCall');
-  Button1.addEventListener('click', function(event) {
-    let audio = new BrowserWindow({ width: 720, height: 420 });
-    audio.loadURL(url.format({
-        pathname: path.join(__dirname, 'AudioCall.html'),
-        protocol: 'file:',
-        slashes: true
-      }));
+  const Button1 = document.getElementById('AudioCall');
+  Button1.addEventListener('click', function audioSuccess(mediaStream1) {
+    console.log('Got stream with constraints:', constraints1);
+    navigator.mediaDevices.getUserMedia(constraints1)
+    .then(function(mediaStream1) {
+      var audio = document.querySelector('audio');
+      audio.srcObject = mediaStream1;
+      audio.onloadedmetadata = function(a) {
+        audio.play();
+      };
     });
-*/
+  });
 
 
 
