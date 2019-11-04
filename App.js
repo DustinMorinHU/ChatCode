@@ -6,7 +6,7 @@ const remote = require('electron');
 const electron = require('electron');
 const app = electron.app
 
-const constraints = window.constraints = {
+const videoConstraints = window.constraints = {
   audio: false,
   video: {
     width: { min: 640, ideal: 1280, max: 1920 },
@@ -23,10 +23,10 @@ Button3.addEventListener("click",
 function handleSuccess(mediaStream) {
   //const videoTracks = mediaStream.getVideoTracks();
   const video = document.querySelector("video");
-  console.log('Got stream with constraints:', constraints);
+  console.log('Got stream with constraints:', videoConstraints);
   //console.log(`Using video device: ${video.label}`);
  // make variable available to browser console
- navigator.mediaDevices.getUserMedia(constraints)
+ navigator.mediaDevices.getUserMedia(videoConstraints)
  .then(function(mediaStream) {
    const video = document.querySelector('video');
    video.srcObject = mediaStream;
@@ -38,7 +38,7 @@ function handleSuccess(mediaStream) {
 
 function handleError(error) {
   if (error.name === "ConstraintNotSatisfiedError") {
-    let v = constraints.video;
+    let v = videoConstraints.video;
     errorMsg(`The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`);
   } else if (error.name === "PermissionDeniedError") {
     errorMsg('Permissions have not been granted to use your camera and ' +
@@ -56,14 +56,14 @@ function errorMsg(msg, error) {
   }
 };
 
-const constraints1 = window.constraints = {
+const audioConstraints = window.constraints = {
   audio: true,
   video: false };
 
   const Button1 = document.getElementById('AudioCall');
   Button1.addEventListener('click', function audioSuccess(mediaStream1) {
-    console.log('Got stream with constraints:', constraints1);
-    navigator.mediaDevices.getUserMedia(constraints1)
+    console.log('Got stream with constraints:', audioConstraints);
+    navigator.mediaDevices.getUserMedia(audioConstraints)
     .then(function(mediaStream1) {
       var audio = document.querySelector('audio');
       audio.srcObject = mediaStream1;
@@ -73,7 +73,8 @@ const constraints1 = window.constraints = {
     });
   });
 
-
+  /*var Button4 = document.getElementById('CloseAudio');
+  Button4.addEventListener('click', function)*/
 
 
   // Or load a local HTML file
