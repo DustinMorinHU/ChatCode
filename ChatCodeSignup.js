@@ -4,6 +4,7 @@ const path = require('path')
 const url = require('url')
 const remote = require('electron');
 const electron = require('electron');
+const crypto = require('crypto');
 const app = electron.app
 const Button = document.getElementById('SignupBtn');
 var text1 = document.getElementById('Signuptxt');
@@ -21,7 +22,7 @@ var toggle = function (elem) {
 };
 Button.addEventListener('click', function(event) {
     hide(text1)
-    console.log('Login Button Clicked!');
+    console.log('Signup Button Clicked!');
     var sql = require("mysql");
     // Database Configuration
     var con = sql.createConnection({
@@ -34,21 +35,16 @@ Button.addEventListener('click', function(event) {
     const newUsr = document.getElementById("newUsr").value.toLowerCase();
     const newPwd = document.getElementById("newPwd").value;
     const newPwd1 = document.getElementById("newPwd1").value;
-    console.log('Provided Username: ' + newUsr);
-    name = con.query('SELECT * FROM Login',(err, rows, fields)=>{
+		sqlQuery = 'SELECT * FROM Login Where Username = ?'
+    con.query(sqlQuery, newUsr ,(err, results, fields)=>{
       if(!err){
-        var text = [];
-        var i;
-          for (i = 0; i < rows.length; i++) {
-            text.push(rows[i].Username.toLowerCase());
-            }
-        console.log(text)
-        len = newUsr.length
-        console.log(len)
-        if (text.indexOf(newUsr) == '-1' && len >= 6){
-            if (newPwd == newPwd1 && newPwd.length >= 6){
-              info = [[newUsr, newPwd]];
-              con.query('INSERT INTO Login(username, password) VALUES ?',[info],(err, results, fields) => {
+				if (results.length == 0 && newUsr.length >= 6 &&morin.tk newUsr.indexOf(' ') >= 0){
+					if (newPwd == newPwd1 && newPwd.length >= 6){
+							hashPwd = crypto.createHash('sha256').update(newPwd).digest('hex');
+
+              info = [[newUsr, hashPwd]];
+              con.query('INSERT INTO Login(Username, Password) VALUES ?',[info],(err, results, fields) => {
+								console.log('Successful signup!')
                   if (err) {
                     return console.error(err.message);
                   }
@@ -68,7 +64,7 @@ Button.addEventListener('click', function(event) {
               document.getElementById('Signuptxt').innerHTML = "Provided passwords didn't match!";
             }
         }
-        else {
+      else {
           console.log('Username taken or password too Short!');
           show(text1);
           document.getElementById('Signuptxt').innerHTML = "Username taken or too short!";
