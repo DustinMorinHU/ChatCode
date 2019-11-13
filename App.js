@@ -5,7 +5,7 @@ const url = require('url')
 const remote = require('electron');
 const electron = require('electron');
 const app = electron.app
-const RTCPeerConnection = require('RTCPeerConnection');
+const RTCPeerConnection = require('rtcpeerconnection');
 
 'use strict';
 
