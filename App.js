@@ -22,16 +22,26 @@ const Button3 = document.getElementById("VidCall");
 
 Button3.addEventListener('click', function(event) {
 
-// Video element where stream will be placed.
-const localVideo = document.querySelector('video');
+const offerOptions = {
+  offerToReceiveVideo: 1,
+};
+
+let startTime = null;
+
+// Define peer connections, streams and video elements
+const localVideo = document.getElementById('localVideo');
+const remoteVideo = document.getElementById('remoteVideo');
 
 // Local stream that will be reproduced on the video.
 let localStream;
+let remoteStream;
 
 // Handles success by adding the MediaStream to the video element.
 function handleSuccess(mediaStream) {
   localStream = mediaStream;
   localVideo.srcObject = mediaStream;
+  trace('Received local stream.');
+  call
 }
 
 // Handles error by logging a message to the console with the error message.
