@@ -295,26 +295,3 @@ function trace(text) {
 
   console.log(now, text);
 }
-
-
-//Initializes media stream.
-/*navigator.mediaDevices.getUserMedia(videoConstraints)
-  .then(gotLocalMedia).catch(errorMsg);
-})
-
-const audioConstraints = window.constraints = {
-  audio: true };
-
-  const Button1 = document.getElementById('AudioCall');
-  Button1.addEventListener('click', function (e) {
-
-    const localAudio = document.querySelector('audio');
-    let localSound;
-    function handleAudioSuccess(mediaStream) {
-      localSound = mediaStream;
-      localAudio.srcObject = mediaStream;
-    }
-    console.log('Got stream with constraints:', audioConstraints);
-    navigator.mediaDevices.getUserMedia(audioConstraints)
-    .then(handleAudioSuccess);
-  });*/
