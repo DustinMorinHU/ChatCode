@@ -6,6 +6,36 @@ body {
     margin: 0;
     -webkit-app-region: drag;
 }
+header {
+  background-color: #525451;
+  padding: 22px;
+  text-align: center;
+  font-size: 43px;
+  color: #0080ff;
+}
+video {
+  float: right;
+  padding: 20px;
+  width: 50%;
+  background-color: rgba(0,0,0,0);
+  position:relative;
+  z-index: 10;
+}
+chat {
+  float: right;
+  padding: 20px;
+  width: 70%;
+  height: 65%;
+  background-color: #f1f1f1;
+  position: absolute
+}
+uibuttons {
+  float: left;
+  padding: 20px;
+  width: 30%;
+  height: 100%;
+  background-color: rgba(0,0,0,0);
+}
 .text {
     color: #0080ff;
     font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -31,7 +61,7 @@ body {
   text-align: center;
   font-size: 22px;
   padding: 15px;
-  width: 185px;
+  width: 195px;
   transition: all 0.25s;
   cursor: pointer;
   margin: 5px;
@@ -54,7 +84,7 @@ body {
 }
 
 .button:hover span {
-  padding-right: 25px;
+  padding-right: 15px;
 }
 
 .button:hover span:after {

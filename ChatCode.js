@@ -49,7 +49,7 @@ Button.addEventListener('click', function(event) {
           protocol: 'file:',
           slashes: true
           }));
-        //window.close()
+        window.close()
 			}
 		else {
 				console.log("Username or password incorrect")
