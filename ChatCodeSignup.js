@@ -38,7 +38,7 @@ Button.addEventListener('click', function(event) {
 		sqlQuery = 'SELECT * FROM Login Where Username = ?'
     con.query(sqlQuery, newUsr ,(err, results, fields)=>{
       if(!err){
-				if (results.length == 0 && newUsr.length >= 6 &&morin.tk newUsr.indexOf(' ') >= 0){
+				if (results.length == 0 && newUsr.length >= 6 && !(newUsr.indexOf(' ') >= 0)){
 					if (newPwd == newPwd1 && newPwd.length >= 6){
 							hashPwd = crypto.createHash('sha256').update(newPwd).digest('hex');
 
