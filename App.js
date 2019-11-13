@@ -18,10 +18,6 @@ const videoConstraints = {
   }
 };
 
-const Button3 = document.getElementById("startVid");
-
-Button3.addEventListener('click', function(event) {
-
 const offerOptions = {
   offerToReceiveVideo: 1,
 };
@@ -199,27 +195,27 @@ function createdAnswer(description) {
 // Define and add behavior to buttons.
 
 // Define action buttons.
-const startButton = document.getElementById('startButton');
+const startVid = document.getElementById('startVid');
 const callButton = document.getElementById('callButton');
-const hangupButton = document.getElementById('hangupButton');
+const closeButton = document.getElementById('closeButton');
 
 // Set up initial action buttons status: disable call and hangup.
 callButton.disabled = true;
-hangupButton.disabled = true;
+closeButton.disabled = true;
 
 
 // Handles start button action: creates local MediaStream.
 function startAction() {
-  startButton.disabled = true;
-  navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
-    .then(gotLocalMediaStream).catch(handleLocalMediaStreamError);
+  startVid.disabled = true;
+  navigator.mediaDevices.getUserMedia(videoConstraints)
+    .then(gotLocalMedia).catch(errorMsg);
   trace('Requesting local stream.');
 }
 
 // Handles call button action: creates peer connection.
 function callAction() {
   callButton.disabled = true;
-  hangupButton.disabled = false;
+  closeButton.disabled = false;
 
   trace('Starting call.');
   startTime = window.performance.now();
@@ -267,15 +263,15 @@ function hangupAction() {
   remotePeerConnection.close();
   localPeerConnection = null;
   remotePeerConnection = null;
-  hangupButton.disabled = true;
+  closeButton.disabled = true;
   callButton.disabled = false;
   trace('Ending call.');
 }
 
 // Add click event handlers for buttons.
-startButton.addEventListener('click', startAction);
+startVid.addEventListener('click', startAction);
 callButton.addEventListener('click', callAction);
-hangupButton.addEventListener('click', hangupAction);
+closeButton.addEventListener('click', hangupAction);
 
 
 // Define helper functions.
@@ -299,3 +295,26 @@ function trace(text) {
 
   console.log(now, text);
 }
+
+
+//Initializes media stream.
+/*navigator.mediaDevices.getUserMedia(videoConstraints)
+  .then(gotLocalMedia).catch(errorMsg);
+})
+
+const audioConstraints = window.constraints = {
+  audio: true };
+
+  const Button1 = document.getElementById('AudioCall');
+  Button1.addEventListener('click', function (e) {
+
+    const localAudio = document.querySelector('audio');
+    let localSound;
+    function handleAudioSuccess(mediaStream) {
+      localSound = mediaStream;
+      localAudio.srcObject = mediaStream;
+    }
+    console.log('Got stream with constraints:', audioConstraints);
+    navigator.mediaDevices.getUserMedia(audioConstraints)
+    .then(handleAudioSuccess);
+  });*/
