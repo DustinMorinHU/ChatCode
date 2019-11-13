@@ -231,7 +231,7 @@ function callAction() {
   }
 
   const servers = null;  // Allows for RTC server configuration.
-
+  console.log("I am here!!!");
   // Create peer connections and add behavior.
   localPeerConnection = new RTCPeerConnection(servers);
   trace('Created local peer connection object localPeerConnection.');
