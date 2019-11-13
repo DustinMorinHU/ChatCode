@@ -7,20 +7,17 @@
      <body>
        <div id="container">
        <header><p1>ChatCode<p1></header>
-        <video autoplay playsinline></video>
+        <video id="localVideo" autoplay playsinline ></video>
+        <video id="remoteVideo" autoplay playsinline></video>
+        <audio autoplay></audio>
         <uibuttons>
-        <button id = "VidCall" class="button"><span>Video Call</span></button>
-         <br>
-         <button id = "CloseVid" class="button"><span>End Video Call</span></button>
-         <br>
-         <audio playsinline></audio>
-         <button id = "AudioCall" class="button"><span>Audio Call</span></button>
-         <br>
-         <button id = "CloseAudio" class="button"><span>End Audio Call</span></button>
-       </uibuttons>
-       <div id = "chat"><chat><span>test</span></chat></div>
+        <button id = "VidCall" class="button"><span>Start</span></button>
+          <button id = "StartVideo" class="button"><span>Start Call</span></button>
+          <button id = "CloseVid" class="button"><span>Hangup Video</span></button>
+          <button id = "AudioCall" class="button"><span>Audio Call</span></button>
+        </uibuttons></div>
+        <div id = "chat"><chat><span>test</span></chat></div>
      </body>
->>>>>>> 31f52d7dba7c1668d21c37a6f52e44cee13332c4
     <link rel ="stylesheet" href = "styles.css">
     <script src="App.js"></script>
 </html>
