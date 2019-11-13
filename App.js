@@ -1,4 +1,4 @@
-console.log('renderer process 2');
+console.log('Main Application Render');
 const BrowserWindow = require('electron').remote.BrowserWindow;
 const path = require('path')
 const url = require('url')
@@ -6,7 +6,9 @@ const remote = require('electron');
 const electron = require('electron');
 const app = electron.app
 
-const videoConstraints = window.constraints = {
+'use strict';
+
+const videoConstraints = {
   audio: false,
   video: {
     width: { min: 640, ideal: 1280, max: 1920 },
@@ -16,26 +18,23 @@ const videoConstraints = window.constraints = {
   }
 };
 
-console.log("REACT!");
 const Button3 = document.getElementById("VidCall");
-//const mediaStream = navigator.mediaDevices.getUserMedia(constraints);
-Button3.addEventListener("click",
-function handleSuccess(mediaStream) {
-  //const videoTracks = mediaStream.getVideoTracks();
-  const video = document.querySelector("video");
-  console.log('Got stream with constraints:', videoConstraints);
-  //console.log(`Using video device: ${video.label}`);
- // make variable available to browser console
- navigator.mediaDevices.getUserMedia(videoConstraints)
- .then(function(mediaStream) {
-   const video = document.querySelector('video');
-   video.srcObject = mediaStream;
-   video.onloadedmetadata = function(e) {
-     video.play();
-   }
- });
-});
 
+Button3.addEventListener('click', function(event) {
+
+// Video element where stream will be placed.
+const localVideo = document.querySelector('video');
+
+// Local stream that will be reproduced on the video.
+let localStream;
+
+// Handles success by adding the MediaStream to the video element.
+function handleSuccess(mediaStream) {
+  localStream = mediaStream;
+  localVideo.srcObject = mediaStream;
+}
+
+// Handles error by logging a message to the console with the error message.
 function handleError(error) {
   if (error.name === "ConstraintNotSatisfiedError") {
     let v = videoConstraints.video;
@@ -45,7 +44,7 @@ function handleError(error) {
       'microphone, you need to allow the page access to your devices in ' +
       'order for the demo to work.')
   }
-  errorMsg(`getUserMedia error: ${error.name}`, error);
+  errorMsg('getUserMedia error: ${error.name}', error);
 }
 
 function errorMsg(msg, error) {
@@ -56,25 +55,24 @@ function errorMsg(msg, error) {
   }
 };
 
+//Initializes media stream.
+navigator.mediaDevices.getUserMedia(videoConstraints)
+  .then(handleSuccess).catch(errorMsg);
+})
+
 const audioConstraints = window.constraints = {
-  audio: true,
-  video: false };
+  audio: true };
 
   const Button1 = document.getElementById('AudioCall');
-  Button1.addEventListener('click', function audioSuccess(mediaStream1) {
+  Button1.addEventListener('click', function (e) {
+
+    const localAudio = document.querySelector('audio');
+    let localSound;
+    function handleAudioSuccess(mediaStream) {
+      localSound = mediaStream;
+      localAudio.srcObject = mediaStream;
+    }
     console.log('Got stream with constraints:', audioConstraints);
     navigator.mediaDevices.getUserMedia(audioConstraints)
-    .then(function(mediaStream1) {
-      var audio = document.querySelector('audio');
-      audio.srcObject = mediaStream1;
-      audio.onloadedmetadata = function(a) {
-        audio.play();
-      };
-    });
+    .then(handleAudioSuccess);
   });
-
-  /*var Button4 = document.getElementById('CloseAudio');
-  Button4.addEventListener('click', function)*/
-
-
-  // Or load a local HTML file
