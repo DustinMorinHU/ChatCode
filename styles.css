@@ -21,7 +21,16 @@ header {
   font-size: 17px;
   color:#0080ff
 }
-video {
+localVideo {
+  float: right;
+  padding: 20px;
+  width: 50%;
+  background-color: rgba(0,0,0,0);
+  position:relative;
+  z-index: 10;
+  overflow:hidden;
+}
+remoteVideo {
   float: right;
   padding: 20px;
   width: 50%;
@@ -36,6 +45,7 @@ chat {
   width: 70%;
   bottom:25px;
   top:95px;
+  right:25px;
   background-color: #f1f1f1;
   position: absolute;
   overflow:hidden;
