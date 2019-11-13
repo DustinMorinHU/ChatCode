@@ -13,6 +13,14 @@ header {
   font-size: 43px;
   color: #0080ff;
 }
+.textchat{
+  position: absolute;
+  bottom: 10px;
+  z-index:20;
+  left: 10px;
+  font-size: 17px;
+  color:#0080ff
+}
 video {
   float: right;
   padding: 20px;
@@ -20,14 +28,17 @@ video {
   background-color: rgba(0,0,0,0);
   position:relative;
   z-index: 10;
+  overflow:hidden;
 }
 chat {
   float: right;
   padding: 20px;
   width: 70%;
-  height: 65%;
+  bottom:25px;
+  top:95px;
   background-color: #f1f1f1;
-  position: absolute
+  position: absolute;
+  overflow:hidden;
 }
 uibuttons {
   float: left;
