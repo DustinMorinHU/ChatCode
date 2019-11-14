@@ -16,7 +16,7 @@ header {
 .textchat{
   position: absolute;
   bottom: 10px;
-  z-index:20;
+  z-index:5;
   left: 10px;
   font-size: 17px;
   color:#0080ff

@@ -7,7 +7,7 @@ const electron = require('electron');
 const app = electron.app;
 const crypto = require('crypto');
 const Button = document.getElementById('button1');
-
+var ipcRenderer = require('electron').ipcRenderer;
 /*const isInitiator;
 
 room = prompt('Enter room name:');
@@ -70,16 +70,28 @@ Button.addEventListener('click', function(event) {
 		const sql1 = "SELECT * FROM Login WHERE Username = ? AND Password = ?";
     con.query(sql1, [myUsr, hashPwd], (err, results)=> {
 			console.log(err);
-			console.log(results);
 			if (results.length > 0 ){
+				const globalVariable={
+					id: results[0].UserID
+				}
+				console.log(globalVariable.id)
 				console.log('SUCCESS!')
-        let chatWin = new BrowserWindow({ width: 1280, height: 720 });
+        let chatWin = new BrowserWindow({ width: 1280, height: 720});
         chatWin.loadURL(url.format({
           pathname: path.join(__dirname, 'ChatCode.html'),
           protocol: 'file:',
           slashes: true
+
           }));
-        window.close()
+					chatWin.webContents.on('did-finish-load', ()=>{
+  					chatWin.webContents.send('UserID', results[0].UserID)
+						 window.close()
+						chatWin.webContents.send('Window', electron.remote.getCurrentWindow())
+					});
+				//chatWin.webContents.send('UserID', results[0].UserID)
+      //window.close()
+			//chatWin.show()
+			//electron.remote.BrowserWindow.mainWindow.close()
 			}
 		else {
 				console.log("Username or password incorrect")

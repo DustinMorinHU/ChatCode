@@ -1,9 +1,17 @@
 console.log('Main Render');
-const electron = require('electron')
+//const BrowserWindow = require('electron').remote.BrowserWindow;
+const path = require('path');
+const url = require('url');
+const electron = require('electron');
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
+const remote = require('electron');
+//const ipcRenderer = require('electron');
+
+//var ipcRenderer = require('electron').ipcRenderer;
 const BrowserWindow = electron.BrowserWindow
+var ipcMain = require('electron').ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -16,7 +24,7 @@ function createWindow () {
   mainWindow.loadURL(`file://${__dirname}/index.html`)
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
-
+  //global.mainWindow
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -48,5 +56,13 @@ app.on('activate', function () {
   }
 })
 
+ipcMain.on('chatWin',()=>{
+  mainWindow.close();
+  console.log("here");
+});
+ipcMain.on('chatWin',()=>{
+  mainWindow.close();
+  console.log("here");
+});
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

@@ -2,10 +2,19 @@ console.log('Main Application Render');
 const BrowserWindow = require('electron').remote.BrowserWindow;
 const path = require('path')
 const url = require('url')
-const remote = require('electron');
+const remote = require('electron').remote;
 const electron = require('electron');
 const app = electron.app
 const RTCPeerConnection = require('rtcpeerconnection');
+var ipcRenderer = require('electron').ipcRenderer;
+ipcRenderer.on('UserID', function (event,UserID) {
+    console.log(UserID);
+    console.log(remote.getGlobal('mainWindow'));
+});
+ipcRenderer.on( "mainWindow", ( event, mainWindow ) => {
+  mainWindow.close()
+} );
+
 
 'use strict';
 
