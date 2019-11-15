@@ -85,8 +85,7 @@ Button.addEventListener('click', function(event) {
           }));
 					chatWin.webContents.on('did-finish-load', ()=>{
   					chatWin.webContents.send('UserID', results[0].UserID)
-						 window.close()
-						chatWin.webContents.send('Window', electron.remote.getCurrentWindow())
+						window.close()
 					});
 				//chatWin.webContents.send('UserID', results[0].UserID)
       //window.close()

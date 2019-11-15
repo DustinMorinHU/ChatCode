@@ -7,14 +7,13 @@ const electron = require('electron');
 const app = electron.app
 const RTCPeerConnection = require('rtcpeerconnection');
 var ipcRenderer = require('electron').ipcRenderer;
+var uID = null;
 ipcRenderer.on('UserID', function (event,UserID) {
     console.log(UserID);
     console.log(remote.getGlobal('mainWindow'));
+    uID = UserID
+    console.log(uID)
 });
-ipcRenderer.on( "mainWindow", ( event, mainWindow ) => {
-  mainWindow.close()
-} );
-
 
 'use strict';
 
