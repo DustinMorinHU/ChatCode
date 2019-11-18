@@ -24,7 +24,7 @@ localVideo {
   float: right;
   padding: 0px;
   width: 50%;
-  position:relative;
+  position:absolute;
   z-index: 50;
   overflow:hidden;
 }

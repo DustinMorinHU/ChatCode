@@ -5,17 +5,32 @@ const url = require('url')
 const remote = require('electron').remote;
 const electron = require('electron');
 const app = electron.app
+var MySQLEvents = require('mysql-events');
 const RTCPeerConnection = require('rtcpeerconnection');
 var ipcRenderer = require('electron').ipcRenderer;
 var uID = null;
 var chat = null;
+var chatHistory = document.getElementById('chattxt')
+var dsn = {
+  host:     'morin.tk',
+  user:     'ChatCode',
+  password: 'ChatCode123'
+};
+var myCon = MySQLEvents(dsn);
+var event1 = myCon.add(
+  'ChatCode.GeneralChat.MsgID.value',
+  function (oldRow, newRow, event) {
+    //code goes here
+  },
+  'Active'
+);
 ipcRenderer.on('UserID', function (event,UserID) {
     console.log(UserID);
     uID = UserID
 });
 const SendChat = document.getElementById('sendchat');
 SendChat.addEventListener('click', function(event){
-  chat = document.getElementById('textchat').value;
+  chat = document.getElementById('textchat');
   var sql = require("mysql");
   // Database Configuration
   var con = sql.createConnection({
@@ -26,13 +41,21 @@ SendChat.addEventListener('click', function(event){
       database: 'ChatCode',
   });
   const stmnt = "INSERT INTO GeneralChat(UserID, Message) VALUES ?";
-  //console.log(con.query(stmnt, [uID, chat]))
-  console.log(uID, chat)
-  info = [[uID,chat]]
-  console.log(con.query(stmnt, [uID, chat] , (err, results)=> {}))
+  info = [[uID,chat.value]]
   con.query(stmnt, [info] , (err, results)=> {
     console.log(err);
     console.log("Message Sent");
+    chat.value = null
+    con.query('select * from GeneralChat', (err, result, field)=>{
+      console.log(err, result);
+      console.log(result[0].Message)
+      chatHistory.innerHTML += "<br>"+ result[0].Message;
+      console.log (chatHistory.value)
+    })
+
+
+
+
   });
 });
 'use strict';

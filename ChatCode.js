@@ -65,40 +65,44 @@ Button.addEventListener('click', function(event) {
     const myUsr = document.getElementById("myUsr").value.toLowerCase();
     const myPwd = document.getElementById("myPwd").value;
 		hashPwd = crypto.createHash('sha256').update(myPwd).digest('hex');
-		console.log(myPwd, hashPwd);
-    console.log('Provided Username: ' + myUsr);
 		const sql1 = "SELECT * FROM Login WHERE Username = ? AND Password = ?";
     con.query(sql1, [myUsr, hashPwd], (err, results)=> {
-			console.log(err);
-			if (results.length > 0 ){
-				const globalVariable={
-					id: results[0].UserID
+			if(!err){
+				if (results.length > 0 ){
+					const globalVariable={
+						id: results[0].UserID
+					}
+					console.log(globalVariable.id)
+					console.log('SUCCESS!')
+	        let chatWin = new BrowserWindow({ width: 1280, height: 720});
+	        chatWin.loadURL(url.format({
+	          pathname: path.join(__dirname, 'ChatCode.html'),
+	          protocol: 'file:',
+	          slashes: true
+
+	          }));
+						chatWin.webContents.on('did-finish-load', ()=>{
+	  					chatWin.webContents.send('UserID', results[0].UserID)
+							window.close()
+						});
+					//chatWin.webContents.send('UserID', results[0].UserID)
+	      //window.close()
+				//chatWin.show()
+				//electron.remote.BrowserWindow.mainWindow.close()
 				}
-				console.log(globalVariable.id)
-				console.log('SUCCESS!')
-        let chatWin = new BrowserWindow({ width: 1280, height: 720});
-        chatWin.loadURL(url.format({
-          pathname: path.join(__dirname, 'ChatCode.html'),
-          protocol: 'file:',
-          slashes: true
+				else {
+						console.log("Username or password incorrect")
+						show(text1)
+	        	document.getElementById('Logintxt').innerHTML = "Username or password incorrect";
+				};
 
-          }));
-					chatWin.webContents.on('did-finish-load', ()=>{
-  					chatWin.webContents.send('UserID', results[0].UserID)
-						window.close()
-					});
-				//chatWin.webContents.send('UserID', results[0].UserID)
-      //window.close()
-			//chatWin.show()
-			//electron.remote.BrowserWindow.mainWindow.close()
-			}
-		else {
-				console.log("Username or password incorrect")
+	  	}
+			else {
+				console.log(err)
 				show(text1)
-        document.getElementById('Logintxt').innerHTML = "Username or password incorrect";
+				document.getElementById('Logintxt').innerHTML = "Something went wrong! Try again later!";
 			};
-
-  	});
+		});
 });
 const ExitBtn = document.getElementById('CloseBtn');
 ExitBtn.addEventListener('click', function(event) {
