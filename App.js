@@ -5,25 +5,11 @@ const url = require('url')
 const remote = require('electron').remote;
 const electron = require('electron');
 const app = electron.app
-var MySQLEvents = require('mysql-events');
 const RTCPeerConnection = require('rtcpeerconnection');
 var ipcRenderer = require('electron').ipcRenderer;
 var uID = null;
 var chat = null;
-var chatHistory = document.getElementById('chattxt')
-var dsn = {
-  host:     'morin.tk',
-  user:     'ChatCode',
-  password: 'ChatCode123'
-};
-var myCon = MySQLEvents(dsn);
-var event1 = myCon.add(
-  'ChatCode.GeneralChat.MsgID.value',
-  function (oldRow, newRow, event) {
-    //code goes here
-  },
-  'Active'
-);
+var chatHistory = document.getElementById('chattxt');
 ipcRenderer.on('UserID', function (event,UserID) {
     console.log(UserID);
     uID = UserID
