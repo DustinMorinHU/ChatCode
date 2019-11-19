@@ -22,10 +22,16 @@ var con = sql.createConnection({
 ipcRenderer.on('UserID', function (event,UserID) {
     console.log(UserID);
     uID = UserID
-    con.query('select * from GeneralChat', (err, result, field)=>{
-      for (var i = 0; i < result.length; i++){
-        chatHistory.innerHTML += result[i].Message +"<br>";
+    con.query('select * from GeneralChat', (err, results, field)=>{
+      for (var i = 0; i < results.length; i++){
+        console.log([results[i].UserID])
+        console.log([results[i].Message][0])
+        let message = [results[i].Message][0]
+        con.query(('SELECT Username from Login WHERE UserID = ?'),[results[i].UserID],(err,result)=>{
+        console.log("this", result[0].Username);
+        chatHistory.innerHTML += result[0].Username+" : "+message +"<br>";
         console.log("lol")
+        })
       };
       console.log("done");
     });
