@@ -9,6 +9,7 @@ const RTCPeerConnection = require('rtcpeerconnection');
 var ipcRenderer = require('electron').ipcRenderer;
 var uID = null;
 var chat = null;
+const numochat = 0;
 var chatHistory = document.getElementById('chattxt');
 var sql = require("mysql");
 // Database Configuration
@@ -19,23 +20,25 @@ var con = sql.createConnection({
     server: 'Morin.tk',
     database: 'ChatCode',
 });
+function chatrefresh(){
+  console.log("contacted server")
+  chatHistory.innerHTML = ""
+    con.query('select * from GeneralChat', (err, results, field)=>{
+      for (var i = 0; i < results.length; i++){
+        let message = [results[i].Message][0]
+        con.query(('SELECT Username from Login WHERE UserID = ?'),[results[i].UserID],(err,result)=>{
+        chatHistory.innerHTML += result[0].Username+" : "+message +"<br>";
+        })
+      };
+    });
+  };
 ipcRenderer.on('UserID', function (event,UserID) {
     console.log(UserID);
     uID = UserID
-    con.query('select * from GeneralChat', (err, results, field)=>{
-      for (var i = 0; i < results.length; i++){
-        console.log([results[i].UserID])
-        console.log([results[i].Message][0])
-        let message = [results[i].Message][0]
-        con.query(('SELECT Username from Login WHERE UserID = ?'),[results[i].UserID],(err,result)=>{
-        console.log("this", result[0].Username);
-        chatHistory.innerHTML += result[0].Username+" : "+message +"<br>";
-        console.log("lol")
-        })
-      };
-      console.log("done");
+    //chat()
+    setInterval(chatrefresh, 10000);
     });
-});
+chatrefresh()
 const SendChat = document.getElementById('sendchat');
 SendChat.addEventListener('click', function(event){
   chat = document.getElementById('textchat');
@@ -45,18 +48,9 @@ SendChat.addEventListener('click', function(event){
     console.log(err);
     console.log("Message Sent");
     chat.value = null
-    con.query('select * from GeneralChat', (err, result, field)=>{
-      console.log(err, result);
-      console.log(result[result.length-1].Message)
-      chatHistory.innerHTML +=result[result.length-1].Message + "<br>";
-      console.log (chatHistory)
+    chatrefresh()
     })
-
-
-
-
   });
-});
 'use strict';
 
 const videoConstraints = {
