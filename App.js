@@ -62,6 +62,7 @@ SendChat.addEventListener('click', function(event){
   con.query(stmnt, [info] , (err, results)=> {
     console.log(err);
     console.log("Message Sent");
+    chat = document.getElementById('textchat');
     chat.value = null
     chatrefresh()
     })
