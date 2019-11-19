@@ -9,7 +9,21 @@ const RTCPeerConnection = require('rtcpeerconnection');
 var ipcRenderer = require('electron').ipcRenderer;
 var uID = null;
 var chat = null;
-const numochat = 0;
+const crypto = require('crypto');
+const algorithm = 'aes-256-ctr';
+const password = "26gf#8273%%gahdsf7%sd$tf"
+function encryptText(text){
+    const cipher = crypto.createCipher(algorithm,password);
+    let encrypted = cipher.update(text,'utf8','hex');
+    encrypted += cipher.final('hex');
+    return encrypted;
+};
+function decryptText(text){
+    const decipher = crypto.createDecipher(algorithm,password);
+    let decrypted = decipher.update(text,'hex','utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+};
 var chatHistory = document.getElementById('chattxt');
 var sql = require("mysql");
 // Database Configuration
@@ -27,7 +41,7 @@ function chatrefresh(){
       for (var i = 0; i < results.length; i++){
         let message = [results[i].Message][0]
         con.query(('SELECT Username from Login WHERE UserID = ?'),[results[i].UserID],(err,result)=>{
-        chatHistory.innerHTML += result[0].Username+" : "+message +"<br>";
+        chatHistory.innerHTML += result[0].Username+" : "+decryptText(message) +"<br>";
         })
       };
     });
@@ -42,8 +56,9 @@ chatrefresh()
 const SendChat = document.getElementById('sendchat');
 SendChat.addEventListener('click', function(event){
   chat = document.getElementById('textchat');
+  chat = encryptText(chat.value)
   const stmnt = "INSERT INTO GeneralChat(UserID, Message) VALUES ?";
-  info = [[uID,chat.value]]
+  info = [[uID,chat]]
   con.query(stmnt, [info] , (err, results)=> {
     console.log(err);
     console.log("Message Sent");
