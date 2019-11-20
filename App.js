@@ -275,8 +275,8 @@ function startAction() {
 
 // Handles call button action: creates peer connection.
 function callAction() {
-  callButton.disabled = true;
-  closeButton.disabled = false;
+  callButton.disabled = false;
+  closeButton.disabled = true;
 
   trace('Starting call.');
   startTime = window.performance.now();
@@ -291,17 +291,20 @@ function callAction() {
     trace(`Using audio device: ${audioTracks[0].label}.`);
   }
 
+  const config = {
+    iceServers: [{ url: 'stun:stun2.1.google.com:19302' }]
+  }
   const servers = null;  // Allows for RTC server configuration.
   console.log("I am here!!!");
   // Create peer connections and add behavior.
-  localPeerConnection = new RTCPeerConnection(servers);
+  localPeerConnection = new RTCPeerConnection(config);
   trace('Created local peer connection object localPeerConnection.');
 
   localPeerConnection.addEventListener('icecandidate', handleConnection);
   localPeerConnection.addEventListener(
     'iceconnectionstatechange', handleConnectionChange);
 
-  remotePeerConnection = new RTCPeerConnection(servers);
+  remotePeerConnection = new RTCPeerConnection(config);
   trace('Created remote peer connection object remotePeerConnection.');
 
   remotePeerConnection.addEventListener('icecandidate', handleConnection);
