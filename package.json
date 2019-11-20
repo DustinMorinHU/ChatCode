@@ -1,12 +1,16 @@
 {
   "name": "ChatCode",
   "version": "0.1.0",
+  "icon": "ChatCode.png",
   "main": "main.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/DustinTylerMorin/ChatCode"
   },
   "scripts": {
+    "create-installer-win": "node installers/windows/createinstaller.js",
+    "create-debian-installer": "electron-installer-debian --src release-builds/ChatCode-linux-x64/ --arch amd64 --config debian.json",
+    "package-linux": "electron-packager .  ChatCode --overwrite --asar=true --platform=linux --arch=x64 --icon=ChatCode.png --prune=true --out=release-builds",
     "start": "electron ."
   },
   "description": "Simple Chat App - Used for chatting, networking, communication.",
@@ -15,10 +19,7 @@
   "dependencies": {
     "electron-prebuilt": "^1.4.13",
     "mysql": "^2.16.0",
-    "mysql-events": "0.0.11",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-scripts": "^1.1.5",
     "rtcpeerconnection": "^8.4.0"
   }
 }

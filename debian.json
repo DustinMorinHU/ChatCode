@@ -1,0 +1,10 @@
+{
+  "dest": "release-builds/",
+  "icon": "ChatCode.png",
+  "categories": [
+    "AudioVideo"
+  ],
+  "lintianOverrides": [
+    "changelog-file-missing-in-native-package"
+  ]
+}
