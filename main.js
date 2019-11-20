@@ -19,9 +19,12 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 420, height: 420, frame: false, resizable: false})
+  mainWindow = new BrowserWindow({width: 420, height: 420, frame: false, resizable: false, icon: __dirname + '/ChatCode.png',})
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)
+    mainWindow.webContents.on('did-finish-load', function() {
+    mainWindow.show();
+  });
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
   //global.mainWindow
