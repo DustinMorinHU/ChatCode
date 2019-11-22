@@ -98,7 +98,7 @@ const remoteVideo = document.getElementById('remoteVideo');*/
 /** browser dependent definition are aligned to one and the same standard name **/
 
 var config = {
- wssHost: 'wss://localhost:631'
+ wssHost: 'wss://localhost:'
  // wssHost: 'wss://example.com/myWebSocket'
 };
 var localVideoElem = null,
