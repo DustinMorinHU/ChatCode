@@ -1,22 +1,52 @@
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port: 8888 });
-var users = [];
+const WebSocketServer = require('ws').Server,
+  express = require('express'),
+  https = require('https'),
+  app = express(),
+  fs = require('fs');
 
-wss.on('listening', function () {
-	console.log("Server started with port 8888");
+/*const pkey = fs.readFileSync('./ssl/key.pem'),
+  pcert = fs.readFileSync('./ssl/cert.pem'),
+  options = {key: pkey, cert: pcert, passphrase: '123456789'};*/
+var wss = null, sslSrv = null;
+
+// use express static to deliver resources HTML, CSS, JS, etc)
+// from the public folder
+app.use(express.static('public'));
+
+app.use(function(req, res, next) {
+  if(req.headers['x-forwarded-proto']==='http') {
+    return res.redirect(['https://', req.get('Host'), req.url].join(''));
+  }
+  next();
 });
 
-wss.on('connection', function (connection) {
-   console.log("User connected");
+// start server (listen on port 631 - SSL)
+sslSrv = https.createServer().listen(3000);
+console.log("The HTTPS server is up and running");
 
-  //message function
-   connection.on('message', function (message) {
-     console.log("message from user");
+// create the WebSocket server
+wss = new WebSocketServer({server: sslSrv, port: 631, host: '127.0.0.1:3000'});
+console.log("WebSocket Secure server is up and running.");
+
+/** successful connection */
+wss.on('connection', function (client) {
+  console.log("A new WebSocket client was connected.");
+  /** incomming message */
+  client.on('message', function (message) {
+    /** broadcast message to all clients */
+    wss.broadcast(message, client);
   });
-
-  //close the connection
-  connection.on('close', function () {
-    console.log("Disconnecting user");
-  });
-
 });
+// broadcasting the message to all WebSocket clients.
+wss.broadcast = function (data, exclude) {
+  var i = 0, n = this.clients ? this.clients.length : 0, client = null;
+  if (n < 1) return;
+  console.log("Broadcasting message to all " + n + " WebSocket clients.");
+  for (; i < n; i++) {
+    client = this.clients[i];
+    // don't send the message to the sender...
+    if (client === exclude) continue;
+    if (client.readyState === client.OPEN) client.send(data);
+    else console.error('Error: the client state is ' + client.readyState);
+  }
+};
