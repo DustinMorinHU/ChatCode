@@ -21,13 +21,16 @@ app.use(function(req, res, next) {
 });
 
 // start server (listen on port 631 - SSL)
-sslSrv = https.createServer().listen(3000);
+sslSrv = https.createServer();
+sslSrv.listen(631);
 console.log("The HTTPS server is up and running");
 
 // create the WebSocket server
-wss = new WebSocketServer({server: sslSrv, port: 631, host: '127.0.0.1:3000'});
+wss = new WebSocketServer({server: sslSrv, port: 631, host: '127.0.0.1'});
 console.log("WebSocket Secure server is up and running.");
-
+wss.on('error', err => {
+	console.log(err);
+});
 /** successful connection */
 wss.on('connection', function (client) {
   console.log("A new WebSocket client was connected.");
