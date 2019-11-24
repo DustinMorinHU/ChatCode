@@ -12,7 +12,7 @@
     "create-debian-installer": "electron-installer-debian --src release-builds/ChatCode-linux-x64/ --arch amd64 --config debian.json",
     "package-linux": "electron-packager .  ChatCode --overwrite --asar=true --platform=linux --arch=x64 --icon=ChatCode.png --prune=true --out=release-builds",
     "start": "electron .",
-    "signalhub": "signalhub listen -p 8080"
+    "signalhub": "signalhub listen -p 80"
   },
   "description": "Simple Chat App - Used for chatting, networking, communication.",
   "author": "Dustin Morin, Tyler Brubaker",

@@ -69,7 +69,7 @@ SendChat.addEventListener('click', function(event){
 const signalhub = require('signalhub');
 const createSwarm = require('webrtc-swarm');
 const hub = signalhub('ChatCode', [
-  'http://localhost:8080'
+  'http://localhost:80'
 ]);
 /*const swarm = createSwarm(hub, {
   stream: stream
