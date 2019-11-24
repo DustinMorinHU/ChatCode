@@ -11,7 +11,9 @@
     "create-installer-win": "node installers/windows/createinstaller.js",
     "create-debian-installer": "electron-installer-debian --src release-builds/ChatCode-linux-x64/ --arch amd64 --config debian.json",
     "package-linux": "electron-packager .  ChatCode --overwrite --asar=true --platform=linux --arch=x64 --icon=ChatCode.png --prune=true --out=release-builds",
-    "start": "electron ."
+    "start": "electron .",
+    "signalhub": "signalhub listen -p 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "description": "Simple Chat App - Used for chatting, networking, communication.",
   "author": "Dustin Morin, Tyler Brubaker",
@@ -20,8 +22,8 @@
     "electron-prebuilt": "^1.4.13",
     "mysql": "^2.16.0",
     "react": "^16.4.2",
-    "express": "^4.14.0",
-    "fs": "0.0.1-security",
-    "ws": "^7.2.0"
+    "signalhub": "^4.9.0",
+    "simple-peer": "^9.6.2",
+    "webrtc-swarm": "^2.9.0"
   }
 }

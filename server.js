@@ -1,55 +1,63 @@
-const WebSocketServer = require('ws').Server,
-  express = require('express'),
-  https = require('https'),
-  app = express(),
-  fs = require('fs');
+'use strict';
 
-const pkey = fs.readFileSync('./SSL/private.pem'),
-  pcert = fs.readFileSync('./SSL/localhost.crt'),
-  options = {key: pkey, cert: pcert, passphrase: 'Tyler'};
-var wss = null, sslSrv = null;
+var os = require('os');
+var nodeStatic = require('node-static');
+var http = require('https');
+var socketIO = require('socket.io');
 
-// use express static to deliver resources HTML, CSS, JS, etc)
-// from the public folder
-app.use(express.static('public'));
+var fileServer = new(nodeStatic.Server)();
+const fs = require('fs');
 
-app.use(function(req, res, next) {
-  if(req.headers['x-forwarded-proto']==='http') {
-    return res.redirect(['https://', req.get('Host'), req.url].join(''));
+const pkey = fs.readFileSync('./SSL/private.pem');
+const pcert = fs.readFileSync('./SSL/localhost.crt');
+const options = {key: pkey, cert: pcert, passphrase: 'Tyler'};
+
+var app = http.createServer(options, function(req, res) {
+  fileServer.serve(req, res);
+}).listen(8080);
+
+var io = socketIO.listen(app);
+io.sockets.on('connection', function(socket) {
+  // function to log server messages on the client
+  function log() {
+    var array = ['Message from server:'];
+    array.push.apply(array, arguments);
+    socket.emit('log', array);
   }
-  next();
-});
 
-// start server (listen on port 631 - SSL)
-sslSrv = https.createServer(options, app);
-sslSrv.listen(3001);
-console.log("The HTTPS server is up and running");
-
-// create the WebSocket server
-wss = new WebSocketServer({server: sslSrv, port: 3001, host: '127.0.0.1'});
-console.log("WebSocket Secure server is up and running.");
-wss.on('error', err => {
-	console.log(err);
-});
-/** successful connection */
-wss.on('connection', function (client) {
-  console.log("A new WebSocket client was connected.");
-  /** incomming message */
-  client.on('message', function (message) {
-    /** broadcast message to all clients */
-    wss.broadcast(message, client);
+  socket.on('message', function(message) {
+    log('Client said: ', message);
+    socket.broadcast.emit('message', message);
   });
-});
-// broadcasting the message to all WebSocket clients.
-wss.broadcast = function (data, exclude) {
-  var i = 0, n = this.clients ? this.clients.length : 0, client = null;
-  if (n < 1) return;
-  console.log("Broadcasting message to all " + n + " WebSocket clients.");
-  for (; i < n; i++) {
-    client = this.clients[i];
-    // don't send the message to the sender...
-    if (client === exclude) continue;
-    if (client.readyState === client.OPEN) client.send(data);
-    else console.error('Error: the client state is ' + client.readyState);
+
+var numClients = io.sockets.sockets.length;
+log('Room ' + room + ' now has ' + numClients + ' client(s)');
+
+if (numClients === 1) {
+  socket.join(room);
+  log('Client ID ' + socket.id + ' created room ' + room);
+  socket.emit('created', room, socket.id);
+  } else if (numClients === 2) {
+  log('Client ID ' + socket.id + ' joined room ' + room);
+  io.sockets.in(room).emit('join', room);
+  socket.join(room);
+  socket.emit('joined', room, socket.id);
+  io.sockets.in(room).emit('ready');
+  } else { // max two clients
+  socket.emit('full', room);
+    }
+  });
+
+socket.on('ipaddr', function() {
+var ifaces = os.networkInterfaces();
+for (var dev in ifaces) {
+ifaces[dev].forEach(function(details) {
+if (details.family === 'IPv4' && details.address !== '127.0.0.1') {
+socket.emit('ipaddr', details.address);
+    }});
   }
-};
+});
+
+socket.on('bye', function(){
+console.log('received bye');
+});
