@@ -77,15 +77,15 @@ const hub = signalhub('ChatCode', [
 ]);
 /*const swarm = createSwarm(hub, {
   stream: mediaStream
-});
+});*/
 
 hub.subscribe('update').on('data', function (data) {
   console.log(data)
-})*/
+})
 
 setInterval(function () {
-  hub.broadcast('update', window.location.hash)
-})
+  hub.broadcast('update', window.location)
+}, 5000)
 
 'use strict';
 
@@ -261,14 +261,14 @@ function startAction() {
   trace('Starting call.');
   startTime = window.performance.now();
   // Get local media stream tracks.
-  const videoTracks = localStream.getVideoTracks()[0];
+  /*const videoTracks = localStream.getVideoTracks()[0];
   const audioTracks = localStream.getAudioTracks()[0];
   if (videoTracks.length > 0) {
     trace(`Using video device: ${videoTracks[0].label}.`);
   }
   if (audioTracks.length > 0) {
     trace(`Using audio device: ${audioTracks[0].label}.`);
-  }
+  }*/
   console.log("I am here!!!");
   // Create peer connections and add behavior.
   localPeerConnection = new RTCPeerConnection(hub);
@@ -296,6 +296,7 @@ function hangupAction() {
   localPeerConnection = null;
   remotePeerConnection = null;
   mediaStream.stop();
+  hub.close();
   trace('Ending call.');
 }
 // Add click event handlers for buttons.
