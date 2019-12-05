@@ -19,11 +19,9 @@
   "license": "UNLICENSED",
   "dependencies": {
     "electron-prebuilt": "^1.4.13",
-    "electron-webrtc": "^0.3.0",
     "mysql": "^2.16.0",
     "react": "^16.4.2",
-    "rtcpeerconnection": "^8.4.0",
     "signalhub": "^4.9.0",
-    "webrtc-swarm": "^2.9.0"
+    "wrtc": "^0.4.2"
   }
 }
