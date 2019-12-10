@@ -67,9 +67,14 @@ SendChat.addEventListener('click', function(event){
 
 'use strict';
 
+const wrtc = require('electron-webrtc')();
+
 const startButton = document.getElementById('startButton');
 const callButton = document.getElementById('callButton');
 const closeButton = document.getElementById('closeButton');
+
+const video1 = document.querySelector('video#video1');
+const video2 = document.querySelector('video#video2');
 
 callButton.disabled = true;
 closeButton.disabled = true;
@@ -78,16 +83,6 @@ closeButton.disabled = true;
 startButton.onclick = startAction;
 callButton.onclick = callAction;
 closeButton.onclick = hangupAction;
-
-
-
-const wrtc = require('wrtc');
-
-var vid1 = document.querySelector('Video1');
-var vid2 = document.querySelector('Video2');
-var vid3 = document.querySelector('video#Video3');
-
-//RTCPeerConnection = window.RTCPeerConnection;
 
 const signalhub = require('signalhub');
 
@@ -99,17 +94,6 @@ hub.subscribe('update').on('data', function (data) {
   console.log(data)
 });
 
-const videoConstraints = {
-  audio: true,
-  video:
-  {   width: { min: 640, ideal: 1280, max: 1920 },
-    height: { min: 480, ideal: 720, max: 1080 },
-    framerate: { max: 30 },
-    aspectRatio: 2.1
-  }
-};
-
-// Local stream that will be reproduced on the video.
 let pc1Local;
 let pc1Remote;
 let pc2Local;
@@ -120,76 +104,76 @@ const offerOptions = {
   offerToReceiveVideo: 1
 };
 
-function gotStream(mediaStream) {
-  console.log('Reveived local stream!');
-  vid1.srcObject = mediaStream;
-  window.localStream = mediaStream;
+function gotStream(stream) {
+  console.log('Received local stream');
+  video1.srcObject = stream;
+  window.localStream = stream;
   callButton.disabled = false;
 }
 
 function startAction() {
-  console.log('Requesting local stream.');
+  console.log('Requesting local stream');
   startButton.disabled = true;
-  const stream = new window.MediaStream();
-  //navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(gotStream)
-  //.catch(e => console.log('getUserMedia() error: ', e))
-};
+  navigator.mediaDevices
+      .getUserMedia({
+        audio: false,
+        video: true
+      })
+      .then(gotStream)
+      .catch(e => console.log('getUserMedia() error: ', e));
+}
 
 function callAction() {
   callButton.disabled = true;
   closeButton.disabled = false;
-  console.log('Starting call');
+  console.log('Starting calls');
   const audioTracks = window.localStream.getAudioTracks();
   const videoTracks = window.localStream.getVideoTracks();
   if (audioTracks.length > 0) {
-    console.log('Using audio device: ${audioTracks[0].label}')
+    console.log(`Using audio device: ${audioTracks[0].label}`);
   }
   if (videoTracks.length > 0) {
-    console.log('Using video device: ${videoTracks[0].label}')
+    console.log(`Using video device: ${videoTracks[0].label}`);
   }
+  // Create an RTCPeerConnection via the polyfill.
+  const servers = null;
+  pc1Local = new wrtc.RTCPeerConnection(servers);
+  pc1Remote = new wrtc.RTCPeerConnection(servers);
+  pc1Remote.ontrack = gotRemoteStream1;
+  pc1Local.onicecandidate = iceCallback1Local;
+  pc1Remote.onicecandidate = iceCallback1Remote;
+  console.log('pc1: created local and remote peer connection objects');
 
-  const servers = ({
-    iceServers:[
-      //{
-        //urls: 'stun:stun.services.mozilla.com'},
-      {urls: 'stun:stun.2.google.com:19302'}]
-   });
+  pc2Local = new wrtc.RTCPeerConnection(servers);
+  pc2Remote = new wrtc.RTCPeerConnection(servers);
+  pc2Remote.ontrack = gotRemoteStream2;
+  pc2Local.onicecandidate = iceCallback2Local;
+  pc2Remote.onicecandidate = iceCallback2Remote;
+  console.log('pc2: created local and remote peer connection objects');
 
-  // const servers = null;
-   pc1Local = new wrtc.RTCPeerConnection(servers);
-   pc1Remote = new wrtc.RTCPeerConnection(servers);
-   pc1Remote.ontrack = gotRemoteStream1;
-   pc1Local.onicecandidate = iceCallback1Local;
-   pc1Remote.onicecandidate = iceCallback1Remote;
-   console.log('pc1: created local and remote peer connection objects.');
+  localStream.getTracks().forEach(track => pc1Local.addTrack(track, localStream));
+  console.log('Adding local stream to pc1Local');
+  pc1Local
+      .createOffer(offerOptions)
+      .then(gotDescription1Local, onCreateSessionDescriptionError);
 
-   pc2Local = new wrtc.RTCPeerConnection(servers);
-   pc2Remote = new wrtc.RTCPeerConnection(servers);
-   pc2Remote.ontrack = gotRemoteStream2;
-   pc2Local.onicecandidate = iceCallback2Local;
-   pc2Remote.onicecandidate = iceCallback2Remote;
-   console.log('pc2: created local and remote peer connection objects.');
-
-   window.localStream.getTracks().forEach(track => pc1Local.addTrack(track, window.localStream));
-   console.log('Adding local stream to pc1Local.');
-   pc1Local.createOffer(offerOptions).then(gotDescription1Local, onCreateSessionDescriptionError);
-
-   window.localStream.getTracks().forEach(track => pc2Local.addTrack(track, window.localStream));
-   console.log('Adding local stream to pc2Local.');
-   pc2Local.createOffer(offerOptions).then(gotDescription2Local, onCreateSessionDescriptionError);
+  window.localStream.getTracks().forEach(track => pc2Local.addTrack(track, window.localStream));
+  console.log('Adding local stream to pc2Local');
+  pc2Local.createOffer(offerOptions)
+      .then(gotDescription2Local, onCreateSessionDescriptionError);
 }
 
 function onCreateSessionDescriptionError(error) {
-  console.log('Failed to create session description: ${error.toString()}');
-};
+  console.log(`Failed to create session description: ${error.toString()}`);
+}
 
 function gotDescription1Local(desc) {
   pc1Local.setLocalDescription(desc);
   console.log(`Offer from pc1Local\n${desc.sdp}`);
   pc1Remote.setRemoteDescription(desc);
-  // Since the 'remote' side has no media stream need
-  // to pass in right constraints in order for it to
-  // accept incoming offer of audio and video.
+  // Since the 'remote' side has no media stream we need
+  // to pass in the right constraints in order for it to
+  // accept the incoming offer of audio and video.
   pc1Remote.createAnswer().then(gotDescription1Remote, onCreateSessionDescriptionError);
 }
 
@@ -203,8 +187,9 @@ function gotDescription2Local(desc) {
   pc2Local.setLocalDescription(desc);
   console.log(`Offer from pc2Local\n${desc.sdp}`);
   pc2Remote.setRemoteDescription(desc);
-  // No 'remote' media stream, pass right constraints
-  // to accept incoming offers
+  // Since the 'remote' side has no media stream we need
+  // to pass in the right constraints in order for it to
+  // accept the incoming offer of audio and video.
   pc2Remote.createAnswer().then(gotDescription2Remote, onCreateSessionDescriptionError);
 }
 
@@ -215,7 +200,7 @@ function gotDescription2Remote(desc) {
 }
 
 function hangupAction() {
-  console.log('Ending call.');
+  console.log('Ending calls');
   pc1Local.close();
   pc1Remote.close();
   pc2Local.close();
@@ -227,16 +212,16 @@ function hangupAction() {
 }
 
 function gotRemoteStream1(e) {
-  if (vid2.srcObject !== e.streams[0]) {
-    vid2.srcObject = e.streams[0];
-    console.log('pc1: received remote stream.');
+  if (video2.srcObject !== e.streams[0]) {
+    video2.srcObject = e.streams[0];
+    console.log('pc1: received remote stream');
   }
 }
 
 function gotRemoteStream2(e) {
-  if (vid2.srcObject !== e.streams[0]) {
-    vid3.srcObject = e.streams[0];
-    console.log('pc2: received remote stream.');
+  if (video1.srcObject !== e.streams[0]) {
+    video1.srcObject = e.streams[0];
+    console.log('pc2: received remote stream');
   }
 }
 
@@ -258,7 +243,7 @@ function iceCallback2Remote(event) {
 
 function handleCandidate(candidate, dest, prefix, type) {
   dest.addIceCandidate(candidate)
-  .then(onAddIceCandidateSuccess, onAddIceCandidateError);
+      .then(onAddIceCandidateSuccess, onAddIceCandidateError);
   console.log(`${prefix}New ${type} ICE candidate: ${candidate ? candidate.candidate : '(null)'}`);
 }
 
@@ -266,8 +251,6 @@ function onAddIceCandidateSuccess() {
   console.log('AddIceCandidate success.');
 }
 
-function onAddIceCandidateError() {
+function onAddIceCandidateError(error) {
   console.log(`Failed to add ICE candidate: ${error.toString()}`);
 }
-
-//var stream = navigator.mediaDevices.getUserMedia({ video: true, audio: true })
